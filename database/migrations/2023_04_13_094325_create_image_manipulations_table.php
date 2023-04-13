@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('image_manipulations', function (Blueprint $table) {
             $table->id();
-            $table->timestamp('created_at');
+            $table->timestamp('created_at')->nullable();
             $table->string('name', 255);
             $table->string('path', 2000);
             $table->string('type', 25);
             $table->text('data');
-            $table->string('output_path', 2000);
-            $table->foreignIdFor(\App\Models\User::class, 'user_id');
-            $table->foreignIdFor(\App\Models\Album::class, 'album_id');
+            $table->string('output_path', 2000)->nullable();
+            $table->foreignIdFor(\App\Models\User::class, 'user_id')->nullable();
+            $table->foreignIdFor(\App\Models\Album::class, 'album_id')->nullable();
         });
     }
 
