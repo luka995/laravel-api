@@ -13,11 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('albums', function (Blueprint $table) {
+        Schema::create('image_manipulations', function (Blueprint $table) {
             $table->id();
+            $table->timestamp('created_at');
             $table->string('name', 255);
-            $table->timestamps();
+            $table->string('path', 2000);
+            $table->string('type', 25);
+            $table->text('data');
+            $table->string('output_path', 2000);
             $table->foreignIdFor(\App\Models\User::class, 'user_id');
+            $table->foreignIdFor(\App\Models\Album::class, 'album_id');
         });
     }
 
@@ -28,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('albums');
+        Schema::dropIfExists('image_manipulations');
     }
 };
