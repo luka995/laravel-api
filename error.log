@@ -1,0 +1,8 @@
+2023/04/24 09:58:57 [error] 22365#22365: *1 FastCGI sent in stderr: "PHP message: PHP Warning:  require(/var/www/courses/laravel-api/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/courses/laravel-api/public/index.php on line 34PHP message: PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/courses/laravel-api/public/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/courses/laravel-api/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /var/www/courses/laravel-api/public/index.php on line 34" while reading response header from upstream, client: 127.0.0.1, server: laravel.local, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/run/php/php8.1-fpm.sock:", host: "laravel.local"
+2023/04/24 09:59:00 [error] 22365#22365: *1 FastCGI sent in stderr: "PHP message: PHP Warning:  require(/var/www/courses/laravel-api/public/../vendor/autoload.php): Failed to open stream: No such file or directory in /var/www/courses/laravel-api/public/index.php on line 34PHP message: PHP Fatal error:  Uncaught Error: Failed opening required '/var/www/courses/laravel-api/public/../vendor/autoload.php' (include_path='.:/usr/share/php') in /var/www/courses/laravel-api/public/index.php:34
+Stack trace:
+#0 {main}
+  thrown in /var/www/courses/laravel-api/public/index.php on line 34" while reading response header from upstream, client: 127.0.0.1, server: laravel.local, request: "GET / HTTP/1.1", upstream: "fastcgi://unix:/run/php/php8.1-fpm.sock:", host: "laravel.local"
