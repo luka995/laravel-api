@@ -15,5 +15,5 @@ class ImageManipulation extends Model
     //can accept only integer or string, so instead of false i set it to null
     const UPDATED_AT = null;
     
-    protected $filable = ['name', 'path', 'type', 'data', 'output_path', 'user_id', 'album_id'];
+    protected $fillable = ['name', 'path', 'type', 'data', 'output_path', 'user_id', 'album_id'];
 }

@@ -9,6 +9,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use App\Models\Album;
 use Intervention\Image\Facades\Image;
+use App\Http\Resources\V1\ImageManipulationResource;
 
 class ImageManipulationController extends Controller
 {
@@ -79,7 +80,14 @@ class ImageManipulationController extends Controller
         
         list($width, $height) = $this->getImageWidthAndHeight($w, $h, $originalPath);
         
+        $resizedFilename = $filename.'-resized.'.$extension;
         
+        $image->resize($width, $height)->save($absolutePath.$resizedFilename);
+        $data['output_path'] = $dir.$resizedFilename;
+        
+        $imageManipulation = ImageManipulation::create($data);
+        
+        return new ImageManipulationResource($imageManipulation);
     }
 
     /**
