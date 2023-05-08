@@ -20,7 +20,7 @@ class ImageManipulationController extends Controller
      */
     public function index()
     {
-        //
+        return ImageManipulation::collection(ImageManipulation::paginate());
     }
 
     /**
@@ -93,23 +93,24 @@ class ImageManipulationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\ImageManipulation  $imageManipulation
+     * @param  \App\Models\ImageManipulation  $image
      * @return \Illuminate\Http\Response
      */
-    public function show(ImageManipulation $imageManipulation)
+    public function show(ImageManipulation $image)
     {
-        //
+        return new ImageManipulationResource($image);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ImageManipulation  $imageManipulation
+     * @param  \App\Models\ImageManipulation  $image
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ImageManipulation $imageManipulation)
+    public function destroy(ImageManipulation $image)
     {
-        //
+        $image->delete();
+        return response('', 204);
     }
     
      /**
@@ -120,7 +121,10 @@ class ImageManipulationController extends Controller
      */
     public function byAlbum(Album $album)
     {
-        //
+        $where = [
+            'album_id' => $album->id
+        ];
+        return ImageManipulation::collection(ImageManipulation::where($where)->paginate());
     }
     
     protected function getImageWidthAndHeight($w, $h, string $originalPath)
