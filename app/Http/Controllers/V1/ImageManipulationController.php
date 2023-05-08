@@ -8,6 +8,7 @@ use App\Models\ImageManipulation;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use App\Models\Album;
+use Intervention\Image\Facades\Image;
 
 class ImageManipulationController extends Controller
 {
@@ -69,9 +70,16 @@ class ImageManipulationController extends Controller
             $extension = pathinfo($image, PATHINFO_EXTENSION);
             $originalPath = $absolutePath.$data['name'];
             
-            copy($image, $absolutePath.$data['name']);
+            copy($image, $originalPath);
         }
         $data['path'] = $dir.$data['name'];
+        
+        $w = $all['w'];
+        $h = $all['h'] ?? false;
+        
+        list($width, $height) = $this->getImageWidthAndHeight($w, $h, $originalPath);
+        
+        
     }
 
     /**
@@ -105,5 +113,27 @@ class ImageManipulationController extends Controller
     public function byAlbum(Album $album)
     {
         //
+    }
+    
+    protected function getImageWidthAndHeight($w, $h, string $originalPath)
+    {
+       $image = Image::make($originalPath);
+       $originalWidth = $image->width();
+       $originalHeight = $image->height();
+       
+       if (str_ends_with($w, '%')) {
+          $ratioW = (float)str_replace('%', '', $w);
+          $ratioH = $h ? (float)str_replace('%', '', $h) : $ratioW;
+          
+          $newWidth = $originalWidth * $ratioW / 100;
+          $newHeight = $originalHeight * $ratioH / 100;
+       } else {
+           //in case of $w is not percentage
+           $newWidth = (float)$w;
+           
+           $newHeight = $h ? (float) $h : $originalHeight * $newWidth/$originalWidth;
+       }
+       
+       return [$newWidth, $newHeight];
     }
 }
