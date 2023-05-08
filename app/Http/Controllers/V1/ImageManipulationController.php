@@ -78,11 +78,11 @@ class ImageManipulationController extends Controller
         $w = $all['w'];
         $h = $all['h'] ?? false;
         
-        list($width, $height) = $this->getImageWidthAndHeight($w, $h, $originalPath);
+        list($width, $height, $imageResized) = $this->getImageWidthAndHeight($w, $h, $originalPath);
         
         $resizedFilename = $filename.'-resized.'.$extension;
         
-        $image->resize($width, $height)->save($absolutePath.$resizedFilename);
+        $imageResized->resize($width, $height)->save($absolutePath.$resizedFilename);
         $data['output_path'] = $dir.$resizedFilename;
         
         $imageManipulation = ImageManipulation::create($data);
@@ -142,6 +142,6 @@ class ImageManipulationController extends Controller
            $newHeight = $h ? (float) $h : $originalHeight * $newWidth/$originalWidth;
        }
        
-       return [$newWidth, $newHeight];
+       return [$newWidth, $newHeight, $image];
     }
 }
