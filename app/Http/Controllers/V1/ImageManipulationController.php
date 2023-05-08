@@ -20,7 +20,7 @@ class ImageManipulationController extends Controller
      */
     public function index()
     {
-        return ImageManipulation::collection(ImageManipulation::paginate());
+        return ImageManipulationResource::collection(ImageManipulation::paginate());
     }
 
     /**
@@ -124,7 +124,7 @@ class ImageManipulationController extends Controller
         $where = [
             'album_id' => $album->id
         ];
-        return ImageManipulation::collection(ImageManipulation::where($where)->paginate());
+        return ImageManipulationResource::collection(ImageManipulation::where($where)->paginate());
     }
     
     protected function getImageWidthAndHeight($w, $h, string $originalPath)
