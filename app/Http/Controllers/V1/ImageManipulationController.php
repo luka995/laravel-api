@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\File;
 use App\Models\Album;
 use Intervention\Image\Facades\Image;
 use App\Http\Resources\V1\ImageManipulationResource;
+use Illuminate\Http\Request;
 
 class ImageManipulationController extends Controller
 {
@@ -46,9 +47,11 @@ class ImageManipulationController extends Controller
             'user_id' => null
         ];
         
-        if (isset($all['album_id'])) {
-            //TODO after implementing authentication
-            
+        if (isset($all['album_id'])) {            
+            $album = Album::find($all['album_id']);
+            if ($album->user_id != $request->user()->id){
+                return abort(403, 'Unauthorized');
+            }
             $data['album_id'] = $all['album_id'];
         }
         
@@ -107,24 +110,30 @@ class ImageManipulationController extends Controller
      * @param  \App\Models\ImageManipulation  $image
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ImageManipulation $image)
+    public function destroy(Request $request, ImageManipulation $image)
     {
+        if ($image->user_id != $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
         $image->delete();
         return response('', 204);
     }
     
-     /**
-     * Shows images by album
+    /**
+     * Display a listing of the resource.
      *
-     * @param  \App\Models\Album  $album
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function byAlbum(Album $album)
+    public function getByAlbum(Request $request, Album $album)
     {
-        $where = [
+        if ($album->user_id != $request->user()->id) {
+            return abort(403, 'Unauthorized action.');
+        }
+
+        return ImageManipulationResource::collection(ImageManipulation::where([
+            'user_id' => $request->user()->id,
             'album_id' => $album->id
-        ];
-        return ImageManipulationResource::collection(ImageManipulation::where($where)->paginate());
+        ])->paginate());
     }
     
     protected function getImageWidthAndHeight($w, $h, string $originalPath)
